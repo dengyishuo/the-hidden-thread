@@ -165,10 +165,23 @@ def md_to_html(text):
     return "\n".join(out)
 
 
+def cn_quotes(text):
+    """把成对的 ASCII 双引号换成中文弯引号 “ ”（按出现顺序交替）。"""
+    out = []
+    open_next = True
+    for ch in text:
+        if ch == '"':
+            out.append("\u201c" if open_next else "\u201d")
+            open_next = not open_next
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
 def split_sections(path):
     """按一级标题切分，返回 [(title, html)]"""
     with open(path, encoding="utf-8") as f:
-        text = f.read()
+        text = cn_quotes(f.read())
     chunks = re.split(r"^#\s+", text, flags=re.M)
     secs = []
     for ch in chunks:

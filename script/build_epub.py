@@ -175,6 +175,24 @@ ol.references p { text-indent: 0; }
 """
 
 
+
+def cn_quotes(text):
+    """把成对的 ASCII 双引号换成中文弯引号 “ ”。
+
+    源稿用 " 写作，pandoc 的 smart 在中文语境里会把两个都判成右引号，
+    所以在交给 pandoc 之前先按出现顺序交替替换。
+    """
+    out = []
+    open_next = True
+    for ch in text:
+        if ch == '"':
+            out.append("\u201c" if open_next else "\u201d")
+            open_next = not open_next
+        else:
+            out.append(ch)
+    return "".join(out)
+
+
 def strip_chapter_number(title: str):
     """把「第一章　语言：…」变成「语言：…」，epub 里章号交给目录。"""
     return re.sub(r"^第[一二三四五六七八九十]+章[\s\u3000]*", "", title)
@@ -193,7 +211,7 @@ def build_markdown():
         if not os.path.exists(path):
             print("缺少文件:", fname)
             continue
-        text = read(path).strip()
+        text = cn_quotes(read(path).strip())
 
         if part and part != last_part:
             last_part = part
@@ -275,7 +293,7 @@ def main():
 
     cmd = [
         "pandoc", md_path,
-        "-f", "markdown+pipe_tables+fenced_divs+bracketed_spans",
+        "-f", "markdown+pipe_tables+fenced_divs+bracketed_spans-smart",
         "-t", "epub3",
         "-o", out_path,
         "--toc", "--toc-depth=1",
