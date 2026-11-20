@@ -4,14 +4,39 @@
 
 > 表面上，技术史是一堆互不相干的发明；底下有一条几乎没人明说的线——人类一直在跟信息的三种成本较劲：**传出去（距离）、留下来（时间）、看得懂（理解）**。每一级台阶，都是在补上一级没补上的窟窿。
 
+📖 **在线阅读**：https://dengyishuo.github.io/the-hidden-thread/
+⬇️ **下载 EPUB**：[the-hidden-thread.epub](https://dengyishuo.github.io/the-hidden-thread/the-hidden-thread.epub)
+
 ## 目录结构
 
 ```
 the-hidden-thread/
-├── draft/        # 中文书稿（序、导论、15 章、结语、尾声、附录）
-├── output/       # 构建产物（单文件 HTML 全书）
-├── script/       # 构建脚本
-└── README.md     # 本文件：结构、主线、五条定律
+├── draft/          # 中文书稿源文件（Markdown，序、导论、15 章、结语、尾声、附录）
+├── docs/           # 发布目录（GitHub Pages 用）：index.html 全书 + EPUB
+├── media/          # 封面图（1600×2400，由脚本生成）
+├── output/         # 本地构建产物（已 gitignore）
+├── script/         # 构建链
+│   ├── build.py          # Markdown → 单文件 HTML 全书
+│   ├── make_cover.py     # 渲染 EPUB 封面图
+│   ├── build_epub.py     # 组装 EPUB3（pandoc）
+│   └── build_site.py     # 一键：HTML + EPUB → docs/
+└── README.md
+```
+
+## 构建
+
+```bash
+python3 script/build_site.py     # 一键生成 docs/index.html + docs/the-hidden-thread.epub
+```
+
+依赖：Python 3、pandoc 3.x、Google Chrome（仅用于渲染封面）。
+
+单独构建：
+
+```bash
+python3 script/build.py          # 只要网页版
+python3 script/make_cover.py     # 只要封面图
+python3 script/build_epub.py     # 只要 EPUB（需先有封面）
 ```
 
 ## 书名
