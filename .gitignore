@@ -1,0 +1,12 @@
+# 构建产物（docs/ 是发布目录，已包含同样的内容）
+output/
+
+# 系统与编辑器
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc
